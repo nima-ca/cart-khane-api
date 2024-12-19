@@ -1,14 +1,27 @@
-import { DataSource } from 'typeorm';
+import configurations from 'src/configs/config';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
-export const AppDataSource = new DataSource({
-    type: 'postgres',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    entities: [__dirname + '/**/*.entity{.ts,.js}'], // Path to your entities
-    migrations: [__dirname + '/migrations/*{.ts,.js}'], // Path to your migrations
-    synchronize: false, // Disable in production
-    logging: true,
-});
+export const getDBCredentials = () => {
+    const config = configurations();
+    return {
+        host: config.database.host,
+        port: config.database.port,
+        database: config.database.name,
+        username: config.database.user,
+        password: config.database.password,
+        ssl: config.database.sslMode,
+    };
+};
+
+export const getDataSourceOptions = (): DataSourceOptions => {
+    return {
+        type: 'postgres',
+        ...getDBCredentials(),
+        logging: true,
+        entities: ['src/modules/**/*.entity.{js,ts}'],
+        migrationsTableName: 'migration',
+        migrations: ['src/migrations/*.ts'],
+    };
+};
+
+export const AppDataSource = new DataSource(getDataSourceOptions());

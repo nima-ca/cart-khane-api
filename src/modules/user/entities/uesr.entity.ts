@@ -4,11 +4,11 @@ import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User extends CoreEntity {
-    @Column({ length: 100 })
-    firstName: string;
+    @Column({ length: 100, nullable: true })
+    firstName?: string;
 
-    @Column({ length: 100 })
-    lastName: string;
+    @Column({ length: 100, nullable: true })
+    lastName?: string;
 
     @Column({ unique: true })
     phoneNumber: string;
