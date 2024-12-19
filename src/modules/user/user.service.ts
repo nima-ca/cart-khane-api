@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Injectable,
     InternalServerErrorException,
+    UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DUPLICATE_KEY_ERROR_NO } from 'src/constants/errors';
@@ -32,6 +33,20 @@ export class UserService {
 
     async findByPhoneNumber(phoneNumber: string): Promise<User | null> {
         return (await this.usersRepository.findOneBy({ phoneNumber })) ?? null;
+    }
+
+    async findById(id: number): Promise<User | null> {
+        return (await this.usersRepository.findOneBy({ id })) ?? null;
+    }
+
+    async validateUserExistence(id: number): Promise<User> {
+        const user = await this.usersRepository.findOneBy({ id });
+
+        if (!user) {
+            throw new UnauthorizedException('invalid token');
+        }
+
+        return user;
     }
 
     async updateOTP(
