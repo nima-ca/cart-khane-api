@@ -31,6 +31,11 @@ const configurations = () => ({
         sms: {
             key: configs.SMS_API_KEY,
         },
+
+        encryption: {
+            key: configs.ENCRYPTION_KEY,
+            iv: configs.ENCRYPTION_IV,
+        },
     },
 });
 

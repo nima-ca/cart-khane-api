@@ -1,4 +1,4 @@
-import { Card } from 'src/modules/card/entities/card.entity';
+import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { CoreEntity } from 'src/modules/shared/entities/core';
 import { Column, Entity, OneToMany } from 'typeorm';
 
@@ -19,6 +19,6 @@ export class User extends CoreEntity {
     @Column({ nullable: true })
     otpSent?: Date;
 
-    @OneToMany(() => Card, (card) => card.user)
-    cards: Card[];
+    @OneToMany(() => Contact, (contact) => contact.user)
+    contacts: Contact[];
 }

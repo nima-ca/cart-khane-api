@@ -1,66 +1,64 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { Type } from 'class-transformer';
 import {
-    IsEmail,
-    IsEnum,
+    IsInt,
     IsNotEmpty,
     IsOptional,
     IsString,
     Length,
-    Matches,
     MaxLength,
+    Min,
+    Validate,
 } from 'class-validator';
 import {
     PaginationDto,
     PaginationMetadataDto,
 } from 'src/common/dto/pagination.dto';
-import { IR_PHONE_NUMBER_REGEX } from 'src/utils/regex';
-import { Card, CardType } from '../entities/card.entity';
+import { IsIBAN } from 'src/common/validators/iban';
+import { Card } from '../entities/card.entity';
 
 export class CreateCardDto {
+    @IsInt()
+    @Min(1)
+    @IsNotEmpty()
+    contactId: number;
+
     @IsString()
     @IsNotEmpty()
     @Length(16, 16)
-    digits: string;
-
-    @IsString()
-    @IsNotEmpty()
-    @MaxLength(100)
-    holderName: string;
-
-    @IsEmail()
-    @IsString()
-    @IsOptional()
-    @MaxLength(320)
-    holderEmail: string;
+    cardNo: string;
 
     @IsString()
     @IsOptional()
-    @MaxLength(15)
-    @Matches(IR_PHONE_NUMBER_REGEX, { message: 'invalid phone number format' })
-    holderPhoneNumber: string;
+    @Validate(IsIBAN)
+    iban: string;
 
     @IsString()
     @IsOptional()
     @MaxLength(2000)
     note: string;
-
-    @IsNotEmpty()
-    @IsEnum(CardType)
-    cardType: CardType;
 }
 
-export class UpdateCardDto extends PartialType(CreateCardDto) {}
+export class UpdateCardDto extends CreateCardDto {}
 
 export class FindAllCardsQueryDto extends PaginationDto {
+    @IsInt()
+    @Min(1)
+    @IsNotEmpty()
+    @Type(() => Number)
+    contactId: number;
+
     @IsOptional()
     @IsString()
     search: string;
-
-    @IsOptional()
-    @IsEnum(CardType)
-    cardType: CardType;
 }
 
 export class FindAllCardsResponseDto extends PaginationMetadataDto {
-    items: Partial<Card[]>;
+    items: Pick<Card, 'cardNo' | 'iban' | 'note'>[];
+}
+
+export class DeleteCardQueryDto {
+    @IsInt()
+    @Min(1)
+    @IsNotEmpty()
+    contactId: number;
 }

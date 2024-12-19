@@ -13,6 +13,7 @@ import { UserJWTPayload } from '../auth/interface/jwt.interface';
 import { CardService } from './card.service';
 import {
     CreateCardDto,
+    DeleteCardQueryDto,
     FindAllCardsQueryDto,
     UpdateCardDto,
 } from './dto/card.dto';
@@ -27,7 +28,7 @@ export class CardController {
         return { id: card.id };
     }
 
-    @Get('')
+    @Get()
     async findAll(
         @AuthUser() user: UserJWTPayload,
         @Query() dto: FindAllCardsQueryDto,
@@ -35,14 +36,13 @@ export class CardController {
         return await this.cardService.findAll(user.sub, dto);
     }
 
-    @Get('/:id')
-    async findOne(@Param('id') id: number, @AuthUser() user: UserJWTPayload) {
-        return await this.cardService.findOne(+id, user.sub);
-    }
-
     @Delete('/:id')
-    async delete(@Param('id') id: number, @AuthUser() user: UserJWTPayload) {
-        await this.cardService.delete(+id, user.sub);
+    async delete(
+        @Param('id') id: number,
+        @AuthUser() user: UserJWTPayload,
+        @Query() dto: DeleteCardQueryDto,
+    ) {
+        await this.cardService.delete(+id, user.sub, dto);
     }
 
     @Put('/:id')
