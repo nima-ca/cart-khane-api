@@ -7,8 +7,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { DUPLICATE_KEY_ERROR_NO } from 'src/constants/errors';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/user.dto';
-import { User } from './entities/uesr.entity';
+import { CreateUserDto, UpdateUserInfoDto } from './dto/user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -37,6 +37,11 @@ export class UserService {
 
     async findById(id: number): Promise<User | null> {
         return (await this.usersRepository.findOneBy({ id })) ?? null;
+    }
+
+    async updateInfo(userId: number, dto: UpdateUserInfoDto) {
+        const user = await this.validateUserExistence(userId);
+        await this.usersRepository.update({ id: user.id }, dto);
     }
 
     async validateUserExistence(id: number): Promise<User> {
