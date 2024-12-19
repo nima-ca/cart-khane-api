@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { DateTime } from 'luxon';
@@ -21,9 +21,9 @@ export class OTPService {
                 },
             );
         } catch {
-            throw new InternalServerErrorException(
-                'خطا در ارسال کد یکبار مصرف',
-            );
+            // throw new InternalServerErrorException(
+            //     'خطا در ارسال کد یکبار مصرف',
+            // );
         }
     }
 

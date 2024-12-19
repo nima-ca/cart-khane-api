@@ -34,10 +34,14 @@ export class UserService {
         return (await this.usersRepository.findOneBy({ phoneNumber })) ?? null;
     }
 
-    async updateOTPSentTime(userId: number) {
+    async updateOTP(
+        userId: number,
+        otp: string,
+        shouldUpdateSentTime: boolean,
+    ) {
         await this.usersRepository.update(
             { id: userId },
-            { otpSent: new Date() },
+            { otp, ...(shouldUpdateSentTime && { otpSent: new Date() }) },
         );
     }
 }

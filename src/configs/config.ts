@@ -15,7 +15,7 @@ const configurations = () => ({
     frontEndDomain: configs.FRONT_END_DOMAIN,
     database: {
         host: configs.DB_HOST,
-        name: configs.DB_DATABASE,
+        name: configs.DB_NAME,
         user: configs.DB_USERNAME,
         password: configs.DB_PASSWORD,
         port: parseInt(configs.DB_PORT, 10) || 5432,
