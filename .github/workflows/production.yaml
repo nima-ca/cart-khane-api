@@ -6,7 +6,7 @@ on:
 
 env:
     IMAGE_NAME: ${{ secrets.DOCKERREG_USERNAME }}/cart-khane-api:${{ github.sha }}
-    ENV_VARIABLES_FILE: ${{ vars.ENV_VARIABLES_FILE }}
+    ENV_VARIABLES_FILE: ${{ secrets.ENV_VARIABLES_FILE }}
 
 jobs:
     publish:
