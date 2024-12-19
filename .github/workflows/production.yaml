@@ -5,8 +5,8 @@ on:
         branches: ['master']
 
 env:
-    REGISTRY: ${{ secrets.DOCKERREG_URL }}
-    IMAGE_NAME: cart-khane-api:${{ github.sha }}
+    IMAGE_NAME: ${{ secrets.DOCKERREG_USERNAME }}/cart-khane-api:${{ github.sha }}
+    ENV_VARIABLES_FILE: ${{ vars.ENV_VARIABLES_FILE }}
 
 jobs:
     publish:
@@ -14,10 +14,16 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
+            - name: 'Create env file'
+              run: |
+                  touch .env.production
+                  echo $ENV_VARIABLES_FILE >> .env.production
+
+            - uses: actions/checkout@v3
             - name: Login
               run: |
-                  echo ${{ secrets.DOCKERREG_PASSWORD }} | docker login ${{ env.REGISTRY }} -u ${{ secrets.DOCKERREG_USERNAME }} --password-stdin
+                  echo ${{ secrets.DOCKERREG_PASSWORD }} | docker login ${{ secrets.DOCKERREG_URL }} -u ${{ secrets.DOCKERREG_USERNAME }} --password-stdin
             - name: Build and Publish
               run: |
-                  docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} .
-                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+                  docker build -t ${{ secrets.DOCKERREG_URL }}/${{ env.IMAGE_NAME }} .
+                  docker push ${{ secrets.DOCKERREG_URL }}/${{ env.IMAGE_NAME }}
