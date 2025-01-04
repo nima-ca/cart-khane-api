@@ -9,13 +9,13 @@ export class AuthController {
 
     @Public()
     @Post('otp')
-    sendOTP(@Body() dto: SendOTPDto) {
-        return this.authService.sendOTP(dto);
+    async sendOTP(@Body() dto: SendOTPDto) {
+        return await this.authService.sendOTP(dto);
     }
 
     @Public()
     @Post('otp/verification')
-    validateOTP(@Body() dto: ValidateOTPDto) {
-        return this.authService.validateOTP(dto);
+    async validateOTP(@Body() dto: ValidateOTPDto) {
+        return await this.authService.validateOTP(dto);
     }
 }
