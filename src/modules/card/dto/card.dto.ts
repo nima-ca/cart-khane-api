@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+    IsCreditCard,
     IsInt,
     IsNotEmpty,
     IsOptional,
@@ -25,6 +26,7 @@ export class CreateCardDto {
     @IsString()
     @IsNotEmpty()
     @Length(16, 16)
+    @Validate(IsCreditCard)
     cardNo: string;
 
     @IsString()
@@ -46,10 +48,6 @@ export class FindAllCardsQueryDto extends PaginationDto {
     @IsNotEmpty()
     @Type(() => Number)
     contactId: number;
-
-    @IsOptional()
-    @IsString()
-    search: string;
 }
 
 export class FindAllCardsResponseDto extends PaginationMetadataDto {
@@ -60,5 +58,6 @@ export class DeleteCardQueryDto {
     @IsInt()
     @Min(1)
     @IsNotEmpty()
+    @Type(() => Number)
     contactId: number;
 }

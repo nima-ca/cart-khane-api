@@ -42,7 +42,7 @@ export class CardService {
 
     async findAll(
         userId: number,
-        { limit, page, search, contactId }: FindAllCardsQueryDto,
+        { limit, page, contactId }: FindAllCardsQueryDto,
     ): Promise<FindAllCardsResponseDto> {
         const user = await this.userService.validateUserExistence(userId);
         const contact = await this.contactService.findOne(contactId, user.id);
@@ -51,14 +51,6 @@ export class CardService {
 
         // Add condition for user ID
         qb.where('card.contactId = :contactId', { contactId: contact.id });
-
-        // Check if a search term is provided
-        if (search) {
-            qb.andWhere(
-                'card.digits ILIKE :search OR card.holderName ILIKE :search OR card.holderPhoneNumber ILIKE :search OR card.holderEmail ILIKE :search',
-                { search: `%${search}%` },
-            );
-        }
 
         // Apply pagination
         qb.skip((page - 1) * limit).take(limit);
@@ -90,11 +82,11 @@ export class CardService {
         const contact = await this.contactService.findOne(contactId, user.id);
 
         const card = await this.cardsRepository.findOne({
-            where: { id, contact },
+            where: { id, contact: { id: contact.id } },
         });
 
         if (!card) {
-            throw new NotFoundException();
+            throw new NotFoundException('کارت یافت نشد');
         }
 
         return card;

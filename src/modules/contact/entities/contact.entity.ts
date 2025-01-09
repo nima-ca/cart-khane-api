@@ -14,6 +14,9 @@ export class Contact extends CoreEntity {
     @Column({ length: 15, default: '' })
     phoneNumber: string;
 
+    @Column({ nullable: true })
+    avatarId: number;
+
     @ManyToOne(() => User, (user) => user.contacts)
     user: User;
 

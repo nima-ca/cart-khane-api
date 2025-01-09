@@ -13,6 +13,9 @@ export class Card extends CoreEntity {
     @Column({ length: 2000, default: '' })
     note: string;
 
-    @ManyToOne(() => Contact, (contact) => contact.cards)
+    @ManyToOne(() => Contact, (contact) => contact.cards, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     contact: Contact;
 }
