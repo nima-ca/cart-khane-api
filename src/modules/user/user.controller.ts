@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch } from '@nestjs/common';
 import { AuthUser } from 'src/common/decorators/user.decorator';
 import { UserJWTPayload } from '../auth/interface/jwt.interface';
 import { UpdateUserInfoDto } from './dto/user.dto';
@@ -26,5 +26,10 @@ export class UserController {
         @Body() dto: UpdateUserInfoDto,
     ) {
         return this.userService.updateInfo(user.sub, dto);
+    }
+
+    @Delete()
+    async delete(@AuthUser() user: UserJWTPayload) {
+        return this.userService.deleteUser(user.sub);
     }
 }

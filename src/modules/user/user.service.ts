@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Injectable,
     InternalServerErrorException,
+    NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -42,6 +43,16 @@ export class UserService {
     async updateInfo(userId: number, dto: UpdateUserInfoDto) {
         const user = await this.validateUserExistence(userId);
         await this.usersRepository.update({ id: user.id }, dto);
+    }
+
+    async deleteUser(userId: number) {
+        const user = await this.findById(userId);
+
+        if (!user) {
+            throw new NotFoundException('کاربر یافت نشد');
+        }
+
+        await this.usersRepository.remove(user);
     }
 
     async validateUserExistence(id: number): Promise<User> {

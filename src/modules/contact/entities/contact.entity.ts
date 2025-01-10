@@ -17,7 +17,10 @@ export class Contact extends CoreEntity {
     @Column({ nullable: true })
     avatarId: number;
 
-    @ManyToOne(() => User, (user) => user.contacts)
+    @ManyToOne(() => User, (user) => user.contacts, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     user: User;
 
     @OneToMany(() => Card, (card) => card.contact, {
