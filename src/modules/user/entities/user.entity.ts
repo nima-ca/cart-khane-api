@@ -19,6 +19,9 @@ export class User extends CoreEntity {
     @Column({ nullable: true })
     otpSent?: Date;
 
+    @Column({ nullable: true })
+    avatarId: number;
+
     @OneToMany(() => Contact, (contact) => contact.user, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',

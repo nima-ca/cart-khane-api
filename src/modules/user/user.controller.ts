@@ -14,8 +14,9 @@ export class UserController {
 
         return {
             id: userInfo.id,
-            firstName: userInfo.firstName,
+            avatarId: userInfo.avatarId,
             lastName: userInfo.lastName,
+            firstName: userInfo.firstName,
             phoneNumber: userInfo.phoneNumber,
         };
     }

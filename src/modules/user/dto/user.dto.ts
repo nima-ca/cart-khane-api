@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+    IsInt,
+    IsNotEmpty,
+    IsString,
+    Max,
+    MaxLength,
+    Min,
+} from 'class-validator';
 
 export class CreateUserDto {
     phoneNumber: string;
@@ -6,6 +13,7 @@ export class CreateUserDto {
     lastName?: string;
     otp?: string;
     otpSent?: Date;
+    avatarId?: number;
 }
 
 export class UpdateUserInfoDto {
@@ -18,4 +26,10 @@ export class UpdateUserInfoDto {
     @IsNotEmpty()
     @MaxLength(100)
     lastName: string;
+
+    @IsInt()
+    @IsNotEmpty()
+    @Min(0)
+    @Max(100)
+    avatarId: number;
 }
