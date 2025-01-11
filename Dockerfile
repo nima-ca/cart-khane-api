@@ -17,11 +17,8 @@ COPY . .
 # Build the NestJS application
 RUN pnpm build
 
-# Run Migrations
-RUN pnpm migration:run -- -d src/configs/orm.ts
-
 # Expose the application port
-EXPOSE 8000
+EXPOSE 5035
 
 # Define the command to run the application
-CMD ["npm", "run", "start:prod"]
+CMD ["./start.sh"]
