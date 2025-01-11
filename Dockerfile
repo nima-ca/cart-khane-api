@@ -21,4 +21,4 @@ RUN pnpm build
 EXPOSE 5035
 
 # Define the command to run the application
-CMD ["./start.sh"]
+CMD npx typeorm migration:run -d dist/configs/orm.js && node dist/main
