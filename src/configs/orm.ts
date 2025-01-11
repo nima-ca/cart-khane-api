@@ -7,7 +7,7 @@ export const getDBCredentials = () => {
         host: config.database.host,
         port: config.database.port,
         database: config.database.name,
-        username: config.database.user,
+        user: config.database.user,
         password: config.database.password,
         ssl: config.database.sslMode,
     };
